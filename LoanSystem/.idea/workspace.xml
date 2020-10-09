@@ -7,6 +7,23 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="E:\WorkSpace\LoanSystem\.idea" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="1idNOsNG82eMeD9mFihFaYkkiLn" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -39,6 +56,7 @@
       <option name="presentableId" value="Default" />
       <updated>1602233479783</updated>
       <workItem from="1602233482779" duration="851000" />
+      <workItem from="1602239344180" duration="794000" />
     </task>
     <servers />
   </component>
@@ -54,6 +72,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1070" y="365" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1602233545653" />
+    <state x="630" y="387" key="com.intellij.ide.util.TipDialog" timestamp="1602239423036">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="630" y="387" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1602239423036" />
     <state x="661" y="311" key="new project wizard" timestamp="1602233584360">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
