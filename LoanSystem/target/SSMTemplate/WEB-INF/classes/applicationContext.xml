@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="com.naiyin.loan"/>
+
+    <!--druid数据源(推荐)-->
+    <bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/loansystem?useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+
+        <property name="maxActive" value="50"/>
+        <property name="minIdle" value="5"/>
+        <property name="maxWait" value="10000"/>    <!--最大闲置时间(ms)-->
+        <property name="loginTimeout" value="10000"/>   <!--获取每条活动连接的等待时间-->
+    </bean>
+
+
+
+    <!--注入SessionFactory-->
+    <bean id="sqlsessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="myDataSource"/>
+
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 下面两个选项这里配置了，mybatis配置文件中就可以省略 -->
+        <!-- 指定mapper映射文件的路径 -->
+        <property name="mapperLocations" value="classpath:com/naiyin/loan/dao/imp/*.xml"/>
+        <!-- 配置alias的路径 -->
+        <property name="typeAliasesPackage" value="com/naiyin/loan/entity"/>
+    </bean>
+
+    <!-- mapper扫描配置，这个相比ibatis来说，就是很大的改进了，可以省去很多的代码，直接通过代理动态的调用 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- mapper扫描路径 -->
+        <property name="basePackage" value="com.naiyin.loan.dao"/>
+        <!-- 对于sqlSessionFactory来说，它只要求一个名字，而不是一个引用，所以不要使用ref的方式 -->
+        <!-- 而且这个还会导致一个问题，配置文件加载失败 -->
+        <!-- <property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+        <!-- 官方推荐使用这个来配置 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlsessionFactory"/>
+    </bean>
+
+    <!-- 配置事务管理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="myDataSource"/>
+    </bean>
+
+    <!-- 支持@Transactional注解（声明式注解） -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+<!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+<!--        <tx:attributes>-->
+<!--            <tx:method name="queryStudentById" propagation="REQUIRED" rollback-for="MyException"/>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+<!--    <aop:config>-->
+<!--        <aop:pointcut id="txPointCut" expression="execution(* com.my.ssm.service.QueryService.queryStudentById(..))"/>-->
+<!--        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>-->
+<!--    </aop:config>-->
+
+    <!--开启aop注解扫描-->
+    <aop:aspectj-autoproxy/>
+
+</beans>

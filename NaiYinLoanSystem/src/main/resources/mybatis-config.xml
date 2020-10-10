@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+  <!-- 引入数据库连接配置文件 -->
+<!--  <properties resource="main/resource/db.properties"></properties>-->
+
+
+
+<!-- 全局参数-->
+ <settings>
+<!--     使全局的映射器启用或禁用二级缓存。一级缓存默认开启-->
+<!--   <select id="findOrderListResultMap" resultMap="ordersUserMap" useCache="false">-->
+<!--   总结：针对每次查询都需要最新的数据sql，要设置成useCache=false，禁用二级缓存。-->
+<!--   <insert id="insertUser" parameterType="cn.itcast.mybatis.po.User" flushCache="true">-->
+<!--  如果有其它insert、update、delete操作数据后需要刷新缓存，如果不执行刷新缓存会出现脏读,flushCache=true表示刷新缓存默认情况下为true,我们不用去设置它。-->
+
+<!--     flushInterval（刷新间隔）可以被设置为任意的正整数，而且它们代表一个合理的毫秒形式的时间段。默认情况是不设置，也就是没有刷新间隔，缓存仅仅调用语句时刷新。-->
+<!--     size（引用数目）可以被设置为任意正整数，要记住你缓存的对象数目和你运行环境的可用内存资源数目。默认值是1024。-->
+<!--     readOnly（只读）属性可以被设置为true或false。只读的缓存会给所有调用者返回缓存对象的相同实例。因此这些对象不能被修改。这提供了很重要的性能优势。可读写的缓存会返回缓存对象的拷贝（通过序列化）。这会慢一些，但是安全，因此默认是false。-->
+<!--     如下例子：-->
+<!--     <mapper namespace="cn.hpu.mybatis.mapper.UserMapper">-->
+<!--     <cache  eviction="FIFO" flushInterval="60000"  size="512" readOnly="true"/>-->
+<!--     （1）当为select语句时：-->
+<!--     flushCache默认为false，表示任何时候语句被调用，都不会去清空本地缓存和二级缓存。-->
+<!--     useCache默认为true，表示会将本条语句的结果进行二级缓存。-->
+<!--     （2）当为insert、update、delete语句时：-->
+<!--     flushCache默认为true，表示任何时候语句被调用，都会导致本地缓存和二级缓存被清空。-->
+<!--     useCache属性在该情况下没有。-->
+<!--     当为select语句的时候，如果没有去配置flushCache、useCache，那么默认是启用缓存的，所以，如果有必要，那么就需要人工修改配置-->
+     <setting name="cacheEnabled" value="true" />
+
+<!--     全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。-->
+     <setting name="lazyLoadingEnabled" value="true" />
+
+<!--     当启用时，有延迟加载属性的对象在被调用时将会完全加载任意属性。否则，每种属性将会按需要加载。-->
+     <setting name="aggressiveLazyLoading" value="true" />
+
+<!--     是否允许单条sql 返回多个数据集 (取决于驱动的兼容性) default:true-->
+     <setting name="multipleResultSetsEnabled" value="true" />
+
+<!--     是否可以使用列的别名 (取决于驱动的兼容性) default:true-->
+     <setting name="useColumnLabel" value="true" />
+
+<!--     允许JDBC（程序） 生成主键。我们一般让mysql自己生成主键。需要驱动器支持。如果设为了true，这个设置将强制使用被生成的主键，有一些驱动器不兼容不过仍然可以执行。 default:false-->
+     <setting name="useGeneratedKeys" value="false" />
+
+<!--     指定 MyBatis 如何自动映射 数据基表的列 NONE：不隐射 PARTIAL:部分 FULL:全部-->
+     <setting name="autoMappingBehavior" value="PARTIAL" />
+
+<!--     这是默认的执行类型 （SIMPLE: 简单； REUSE: 执行器可能重复使用prepared statements语句；BATCH: 执行器可以重复执行语句和批量更新）-->
+     <setting name="defaultExecutorType" value="SIMPLE" />
+
+<!--     使用驼峰命名法转换字段。数据库jj_tt识别pojo类的jjTt-->
+     <setting name="mapUnderscoreToCamelCase" value="true" />
+
+<!--     设置本地缓存范围 session:就会有数据的共享 statement:语句范围 (这样就不会有数据的共享 ) defalut:session-->
+     <setting name="localCacheScope" value="SESSION" />
+
+<!--     设置一但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER，插入空值时不需要指定类型-->
+     <setting name="jdbcTypeForNull" value="NULL" />
+
+ </settings>
+
+<!--  &lt;!&ndash; 定义类的别名 &ndash;&gt;-->
+<!--  <typeAliases>-->
+<!--    &lt;!&ndash; 在映射文件中使用别名 &ndash;&gt;-->
+<!--    <typeAlias type="com.feifan.pojo.User" alias="User"/>-->
+<!--    &lt;!&ndash; 多个类，可以通过配置包扫描 默认别名为类名 &ndash;&gt;-->
+<!--    <package name="com.feifan.pojo"/>-->
+<!--  </typeAliases>-->
+
+
+<!--  &lt;!&ndash; 多个 开发环境，测试环境，选择开发环境 &ndash;&gt;-->
+<!--  <environments default="production">-->
+<!--    <environment id="development">-->
+<!--      &lt;!&ndash;决定事务作用域和控制方式的事务管理器（TransactionManager)  &ndash;&gt;-->
+<!--      <transactionManager type="JDBC"></transactionManager>-->
+<!--      &lt;!&ndash; 数据源采用连接池POOLED/UNPOOLED &ndash;&gt;-->
+<!--      <dataSource type="POOLED">-->
+<!--        <property name="driver" value="${jdbcDriver}"/>-->
+<!--        <property name="url" value="${jdbcUrl}"/>-->
+<!--        <property name="username" value="${jdbcUser}"/>-->
+<!--        <property name="password" value="${jdbcPassword}"/>-->
+<!--      </dataSource>-->
+<!--    </environment>-->
+<!--    &lt;!&ndash; 测试环境 C3P0连接池 &ndash;&gt;-->
+<!--    <environment id="test">-->
+<!--      <transactionManager type="JDBC"></transactionManager>-->
+<!--      <dataSource type="com.feifan.pojo.c3p0DatasourceFactory">-->
+<!--        <property name="driverClass" value="${jdbcDriver}"/>-->
+<!--        <property name="jdbcUrl" value="${jdbcUrl}"/>-->
+<!--        <property name="user" value="${jdbcUser}"/>-->
+<!--        <property name="password" value="${jdbcPassword}"/>-->
+<!--        <property name="initialPoolSize" value="5"/>-->
+<!--        <property name="maxPoolSize" value="20"/>-->
+<!--        <property name="minPoolSize" value="5"/>-->
+<!--      </dataSource>-->
+<!--    </environment>-->
+
+<!--    &lt;!&ndash; 生产环境 &ndash;&gt;-->
+<!--    <environment id="production">-->
+<!--      <transactionManager type="JDBC"></transactionManager>-->
+<!--      <dataSource type="com.feifan.pojo.DruidDataSourceFactory">-->
+<!--        <property name="driverClassName" value="${jdbcDriver}"/>-->
+<!--        <property name="url" value="${jdbcUrl}"/>-->
+<!--        <property name="username" value="${jdbcUser}"/>-->
+<!--        <property name="password" value="${jdbcPassword}"/>-->
+<!--      </dataSource>-->
+<!--    </environment>-->
+
+<!--  </environments>-->
+<!--  &lt;!&ndash; 定义映射文件 &ndash;&gt;-->
+<!--  <mappers>-->
+<!--    &lt;!&ndash; sql映射文件的路径 &ndash;&gt;-->
+<!--    &lt;!&ndash; <mapper resource="com/feifan/mapper/UserMapper.xml"/>-->
+<!--    <mapper resource="com/feifan/mapper/tbUserMapper.xml"/>  &ndash;&gt;-->
+<!--    &lt;!&ndash; 也可以通过配置接口的包扫描，但是xml文件路径要和接口的包路径一样&ndash;&gt;-->
+<!--    <package name="com.feifan.mapper"/>-->
+<!--  </mappers>-->
+</configuration>

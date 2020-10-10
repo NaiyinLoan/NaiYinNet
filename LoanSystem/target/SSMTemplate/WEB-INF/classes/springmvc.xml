@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <!--扫描范围 -->
+    <context:component-scan base-package="com.naiyin.loan.web"/>
+    <!--静态资源处理方式二-->
+    <mvc:default-servlet-handler/>
+    <!-- 注解驱动-->
+    <mvc:annotation-driven conversion-service="myConversionService">
+        <!--消息转换器,可以处理@ResponseBody中的乱码(返回中文字符串时出现乱码情况)-->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json;charset=utf-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--前后端交互格式转换器-->
+    <bean id="myConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.naiyin.loan.web.converter.DateConverter1"/>
+                <bean class="com.naiyin.loan.web.converter.DateConverter2"/>
+                <!--下面还可以有其它的转换器..-->
+            </set>
+        </property>
+    </bean>
+
+    <!-- jackson注解适配器 （默认就是它，可以不用写）-->
+<!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+<!--        <property name="messageConverters">-->
+<!--            <list>-->
+<!--                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+    <!--jsp视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/template/"/>
+        <property name="suffix" value=".html"/>
+    </bean>
+    <!--文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--上传文件最大值(多文件的总值)为5MB-->
+        <property name="maxUploadSize" value="5242880"/>  <!--单位:bytes-->
+    </bean>
+    <!--配置全局拦截器: 所有的的HandlerMapping都会被"前后"拦截-->
+<!--    <mvc:interceptors>   &lt;!&ndash;拦截器栈:FILO(First In Last Out)&ndash;&gt;-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/test/**"/>-->
+<!--            <bean class="MyInterceptor1"/>-->
+<!--        </mvc:interceptor>-->
+<!--    </mvc:interceptors>-->
+</beans>
